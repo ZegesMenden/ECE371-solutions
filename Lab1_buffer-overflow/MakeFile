@@ -1,0 +1,26 @@
+# Basic C Makefile
+
+CC := gcc
+CFLAGS := -Wall -Wextra -g
+TEST_FLAGS := -DTEST_ON_LAPTOP
+
+SRCS_LAB1 := lab1.c
+SRCS_LEDTEST := led_test.c
+
+OUTPUT := build
+
+lab1_target: 
+	${CC} ${SRCS_LAB1} ${CFLAGS} -o ${OUTPUT}/lab1
+
+led_test_target:
+	${CC} ${SRCS_LEDTEST} ${CFLAGS} -o ${OUTPUT}/led_test
+
+lab1_laptop: 
+	${CC} ${SRCS_LAB1} ${CFLAGS} ${TEST_FLAGS} -o ${OUTPUT}/lab1
+
+led_test_laptop:
+	${CC} ${SRCS_LEDTEST} ${CFLAGS} ${TEST_FLAGS} -o ${OUTPUT}/led_test
+
+
+all_targets: lab1_target led_test_target
+all_tests: lab1_laptop led_test_laptop
