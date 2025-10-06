@@ -32,7 +32,7 @@ int main() {
     printf("===Initializing System Password===");
     // Initialize system password (protected secret)
     // TODO: Either prompt for system password and use gets() to take system password as an input or Set data.system_api_key to a password of your choice below
-   // snprintf(data.system_api_key, sizeof(data.system_api_key), "SUPER_SECRET_API_KEY_12345");
+    // snprintf(data.system_api_key, sizeof(data.system_api_key), "SUPER_SECRET_API_KEY_12345");
 
     snprintf(data.system_api_key, sizeof(data.system_api_key)/sizeof(char), "SECRET_PASS_0X252342");
     printf("System key is loaded in memory (not normally visible to users).\n\n");
@@ -42,15 +42,31 @@ int main() {
     // Prompt for username
     // TODO: Use gets() to read into data.username
     printf("Enter Username:\n");
-    gets(data.username);
+    for ( int i = 0; i < (sizeof(data.username) / sizeof(data.username[0])) + 1; i++ ) {
+
+        char c = getchar();
+        if ( c == '\n' ) { break; }
+        if ( i < sizeof(data.username) / sizeof(data.username[0]) ) {
+            data.username[i] = c;
+        }
+
+    }
 
     // TODO: Prompt for password
     // TODO: Use gets() to read into data.password
     printf("Enter Password:\n");
-    gets(data.password);
+    for ( int i = 0; i < (sizeof(data.password) / sizeof(data.password[0])) + 1; i++ ) {
+
+        char c = getchar();
+        if ( c == '\n' ) { break; }
+        if ( i < sizeof(data.password) / sizeof(data.password[0]) ) {
+            data.password[i] = c;
+        }
+
+    }
 
     // print state
-
+    
     printf("Current state:\n");
     printf("\tUsername:\t<");
     for ( size_t i = 0; i < (sizeof(data.username) / sizeof(data.username[0])); i++ ) {

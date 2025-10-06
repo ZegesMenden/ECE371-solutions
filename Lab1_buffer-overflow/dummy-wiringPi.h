@@ -29,6 +29,8 @@ void digitalWrite(int pin, int value) {
 #endif
 
 static inline void delay(uint32_t ms) {
+
+    // I actually have no clue if this works on linux
 #ifdef _WIN32
     Sleep(ms);
 #else
