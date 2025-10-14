@@ -61,6 +61,8 @@ int main() {
         if ( c == '\n' ) { break; }
         if ( i < sizeof(data.password) / sizeof(data.password[0]) ) {
             data.password[i] = c;
+        } else {
+            break;
         }
 
     }
