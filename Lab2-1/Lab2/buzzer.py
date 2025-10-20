@@ -1,29 +1,34 @@
 from gpiozero import Buzzer
 from time import sleep
 
-bz = Buzzer(2)
+bz = Buzzer(2)   # replace None with the correct pin number
 bz.off() 
 
 def success():
     """3 short beeps."""
     # TODO: on/off pattern
-    #sets one longn buzzer that is 0.5 seconds long 
     try:
-        bz.beep(on_time = .1, off_time = .1, n = 3, background = False)
+        for i in range(3):
+            bz.on()
+            sleep(0.1)
+            bz.off()
+            sleep(0.1)
+    except Exception as e:
+        print(f"Error in success buzzer pattern: {e}")
     finally:
-        bz.close()
-    pass
+        cleanup()    
 
 def fail():
     """1 long beep."""
     # TODO: on/off pattern
-    #bz.on, sleep(10, bz.off 
-    #sets one longn buzzer that is 0.5 seconds long 
     try:
-        bz.beep(on_time = 1, off_time = 1, n = 1, background = False)
+        bz.on()
+        sleep(1.0)
+        bz.off()
+    except Exception as e:
+        print(f"Error in fail buzzer pattern: {e}")
     finally:
-        bz.close()
-    pass
+        cleanup()
 
 def cleanup():
     bz.off()
