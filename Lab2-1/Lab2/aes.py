@@ -1,5 +1,13 @@
 import os
-from Cryptodome.Cipher import AES
+
+# Cross-platform import (cryptodome is the only installable instance on our pi for some reason)
+try:
+    from Cryptodome.Cipher import AES
+except ImportError:
+    try:
+        from Crypto.Cipher import AES
+    except ImportError:
+        raise ImportError("pycryptodome is required for AES functionality")
 
 BLOCK = 16
 
