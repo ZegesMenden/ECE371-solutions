@@ -46,7 +46,7 @@ def multiplicative_inverse(e, phi):
         x = y1 - (b // a) * x1
         y = x1
         return gcd, x, y
-    _, x, _ = extended_gcd(e, phi) % phi
+    _, x, _ = extended_gcd(e, phi)
     return (x % phi + phi) % phi
     pass
 
