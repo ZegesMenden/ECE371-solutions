@@ -27,7 +27,7 @@ def gcd(a, b):
     Compute the greatest common divisor of a and b.
     """
     # TODO: implement Euclidean algorithm
-    while b != 0;
+    while b != 0:
         a, b = b, a % b
     return a
     pass
