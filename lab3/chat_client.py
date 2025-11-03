@@ -54,8 +54,12 @@ def main():
         if msg.lower() == "exit":
             break
 
-        # TODO: Encrypt msg with RSA
-        encrypted_msg = encrypt(public, msg)
+        # Encrypt the message with the client's private key so the server
+        # (which has the client's public key sent earlier) can recover it.
+        # Note: this is the simplified lab flow where client uses private
+        # exponent for 'encryption' and the server uses the public exponent
+        # to recover the message.
+        encrypted_msg = encrypt(private, msg)
         # TODO: Convert cipher list -> comma string
         cipher_str = ",".join(map(str, encrypted_msg))
         # TODO: Send ciphertext to server
