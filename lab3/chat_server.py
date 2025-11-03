@@ -70,7 +70,7 @@ def main():
                 ciphertext_str = message.split(":", 1)[1]
                 ciphertext = [int(x) for x in ciphertext_str.split(",") if x.strip()]
                 # TODO: Decrypt with RSA
-                plaintext = decrypt(ciphertext)
+                plaintext = decrypt(client_public_key, ciphertext)
                 print(f"[chat_server] Decrypted message: {plaintext}")
                 # TODO: Print plaintext
                 print(f"[chat_server] Message from client: {plaintext}")
