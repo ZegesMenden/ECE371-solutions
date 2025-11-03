@@ -67,7 +67,7 @@ def is_prime(num):
     
     for i in range(3, int(num**0.5) + 1, 2):
         if num % i == 0:
-            return False    
+            return False
     return True
 
 
@@ -109,13 +109,29 @@ def encrypt(pk, plaintext):
     Encrypt plaintext using key pk = (e or d, n).
     Plaintext is a string; return a list of integers (ciphertext).
     """
-    # TODO: implement RSA encryption
+    # Block-oriented RSA encryption using bytes and PKCS#7-style padding.
     key, n = pk
+    if not isinstance(plaintext, (bytes, bytearray)):
+        data = plaintext.encode('utf-8')
+    else:
+        data = bytes(plaintext)
+
+    k = (n.bit_length() - 1) // 8
+    if k <= 0:
+        raise ValueError("Modulus n is too small to encrypt any data")
+
+    # PKCS#7 padding
+    pad_len = k - (len(data) % k)
+    if pad_len == 0:
+        pad_len = k
+    data += bytes([pad_len]) * pad_len
+
     cipher = []
-    for char in plaintext:
-        cipher.append(pow(ord(char), key, n))
+    for i in range(0, len(data), k):
+        block = data[i:i+k]
+        m = int.from_bytes(block, byteorder='big')
+        cipher.append(pow(m, key, n))
     return cipher
-    pass
 
 
 def decrypt(pk, ciphertext):
@@ -123,12 +139,39 @@ def decrypt(pk, ciphertext):
     Decrypt ciphertext using key pk = (e or d, n).
     Ciphertext is a list of integers; return a string (plaintext).
     """
-    # TODO: implement RSA decryption
+    # Block-oriented RSA decryption matching encrypt().
     key, n = pk
-    plain = []
+    k = (n.bit_length() - 1) // 8
+    if k <= 0:
+        raise ValueError("Modulus n is too small to decrypt any data")
+
+    out_bytes = bytearray()
     for num in ciphertext:
-        plain.append(chr(pow(num, key, n)))
-    return ''.join(plain)
+        m = pow(num, key, n)
+        block = m.to_bytes(k, byteorder='big')
+        out_bytes.extend(block)
+
+    if len(out_bytes) == 0:
+        return ''
+
+    pad_len = out_bytes[-1]
+    if pad_len < 1 or pad_len > k:
+        try:
+            return out_bytes.decode('utf-8')
+        except Exception:
+            return ''.join(chr(b) for b in out_bytes)
+
+    if out_bytes[-pad_len:] != bytes([pad_len]) * pad_len:
+        try:
+            return out_bytes.decode('utf-8')
+        except Exception:
+            return ''.join(chr(b) for b in out_bytes)
+
+    plain_bytes = out_bytes[:-pad_len]
+    try:
+        return plain_bytes.decode('utf-8')
+    except Exception:
+        return plain_bytes.decode('latin-1')
     pass
 
 
