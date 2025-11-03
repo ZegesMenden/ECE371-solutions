@@ -27,8 +27,6 @@ def buzz(duration=0.3):
     lgpio.gpio_write(h, BUZZER_PIN, 1)
     time.sleep(duration)
     lgpio.gpio_write(h, BUZZER_PIN, 0)
-
-
     pass
 
 # --- RSA setup (use your primes from prime_numbers.xlsx) ---
@@ -57,7 +55,7 @@ def main():
             break
 
         # TODO: Encrypt msg with RSA
-        encrpyted_msg = encrpyt(public, msg)
+        encrypted_msg = encrypt(public, msg)
         # TODO: Convert cipher list -> comma string
         cipher_str = ",".join(map(str, encrypted_msg))
         # TODO: Send ciphertext to server

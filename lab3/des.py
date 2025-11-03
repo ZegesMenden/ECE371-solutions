@@ -152,8 +152,6 @@ def string_to_bit_array(text):
         binval = binvalue(ord(char), 8)
         array.extend([int(x) for x in binval])
     return array
-    
-    pass
 
 
 def bit_array_to_string(array):
@@ -161,11 +159,24 @@ def bit_array_to_string(array):
     Convert a list of bits into a string.
     Example: [0,1,0,0,0,0,0,1] -> 'A'
     """
-    # TODO: Implement bit array to string conversion
-    res = ''.join([chr(int(''.join([str(x) for x in array[i:i+8]]), 2)) for i in range(0, len(array), 8)])
-    return res
-pass
+    
+    if not array:
+        return ''
 
+    res_chars = []
+    # Process each full/partial byte
+    for i in range(0, len(array), 8):
+        byte_bits = array[i:i+8]
+        # If the last chunk is shorter than 8, pad with zeros on the right
+        if len(byte_bits) < 8:
+            byte_bits = byte_bits + [0] * (8 - len(byte_bits))
+        # Build the bit string like '01000001'
+        bit_string = ''.join(str(b) for b in byte_bits)
+        # Convert to integer and then to character
+        byte_val = int(bit_string, 2)
+        res_chars.append(chr(byte_val))
+
+    return ''.join(res_chars)
 
 def binvalue(val, bitsize):
     """
@@ -304,8 +315,6 @@ class des():
         """
         # TODO: Implement XOR
         return [b1 ^ b2 for b1, b2 in zip(t1, t2)]
-        pass
-
     
     def generatekeys(self):
         """
@@ -327,14 +336,13 @@ class des():
             g, d = self.shift(g, d, SHIFT[i])
             tmp = g + d
             self.keys.append(self.permut(tmp, CP_2))
-        pass
 
     def shift(self, g, d, n): #Shift a list of the given value
         return g[n:] + g[:n], d[n:] + d[:n]
     
     def addPadding(self):#Add padding to the datas using PKCS5 spec.
         pad_len = 8 - (len(self.text) % 8)
-        self.text += pad_len * chr(pad_len)
+        self.text = self.text + (pad_len * chr(pad_len))
     
     def removePadding(self, data):#Remove the padding of the plain text (it assume there is padding)
         pad_len = ord(data[-1])
