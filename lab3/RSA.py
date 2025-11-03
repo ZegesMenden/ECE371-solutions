@@ -67,9 +67,8 @@ def is_prime(num):
     
     for i in range(3, int(num**0.5) + 1, 2):
         if num % i == 0:
-            return False
-        return True
-    pass
+            return False    
+    return True
 
 
 def generate_keypair(p, q):
