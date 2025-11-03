@@ -148,6 +148,14 @@ def decrypt(pk, ciphertext):
     out_bytes = bytearray()
     for num in ciphertext:
         m = pow(num, key, n)
+        # Defensive check: m should fit in k bytes. If it doesn't,
+        # something went wrong (wrong key, mismatched modulus, or
+        # incorrect block size during encryption).
+        if m >= 256 ** k:
+            raise ValueError(
+                f"Decrypted integer {m} requires more than {k} bytes to represent; "
+                f"this usually means the wrong key/modulus was used or block size mismatch (k={k}, n={n})."
+            )
         block = m.to_bytes(k, byteorder='big')
         out_bytes.extend(block)
 
