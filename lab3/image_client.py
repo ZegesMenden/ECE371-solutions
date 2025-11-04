@@ -59,20 +59,21 @@ def main():
     client.connect((HOST, PORT))
     print(f"[image_client] Connected to {HOST}:{PORT}")
 
-    # Step 1: Send RSA public key
-    # TODO
-    e, n = publickey_msg = f"KEY:{e}, {n}\n"
-    client.senfall(key_msg.encode("utf-8"))
+    # Step 1: Send RSA public key (e,n) to the server
+    # Use the public tuple produced by generate_keypair() above
+    e, n = public
+    key_msg = f"KEY:{e},{n}\n"
+    client.sendall(key_msg.encode("utf-8"))
     print(f"[image_client] sent public key: (e={e}, n={n})")
 
     # Step 2: Send encrypted DES key
-    # TODO
-    des_key_str = ",".join(map(str, encrpyted_des_keu))
+    des_key_str = ",".join(map(str, encrypted_des_key))
     deskey_msg = f"DESKEY:{des_key_str}\n"
     client.sendall(deskey_msg.encode("utf-8"))
     print("[image_client] Sent encrypted DES key")
+
     # Step 3: Send encrypted image
-    # TODO
+    # encrypted_image is a latin-1 string, convert to byte-values
     encrypted_bytes = [str(ord(c)) for c in encrypted_image]
     image_msg = f"IMAGE:{','.join(encrypted_bytes)}\n"
     client.sendall(image_msg.encode("utf-8"))
