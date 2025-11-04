@@ -94,7 +94,7 @@ def main():
                     # TODO: Decrypt using DES
                     cipher = des()
                     encrypted_image_str = ''.join(chr(b) for b in image_ciphertext)
-                    decrypted_image_str = cipher.run(des_key, encrypted_image_str, action=0, padding=True) 
+                    decrypted_image_str = cipher.run_cbc(des_key, encrypted_image_str, action=0, padding=True)
                     # TODO: Save as penguin_decrypted.jpg
                     decrypted_image_bytes = decrypted_image_str.encode("latin-1")
                     with open("penguin_decrypted.jpg", "wb") as f:
