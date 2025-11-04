@@ -47,8 +47,9 @@ with open("penguin.jpg", "rb") as f:
 image_str = image_bytes.decode("latin-1")
 # TODO: Encrypt with DES (use padding=True, cbc=True)
 encrypted_image = cipher.run_cbc(des_key, image_str, action=1, padding=True)
-# TODO: Encrypt DES key with RSA
-encrypted_des_key = encrypt(public, des_key)
+# Encrypt DES key with the client's private key so the server (which
+# receives the client's public key) can recover it with the public exponent
+encrypted_des_key = encrypt(private, des_key)
 
 # --- Socket setup ---
 HOST = "127.0.0.1"
