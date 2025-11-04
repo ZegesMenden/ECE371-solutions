@@ -20,7 +20,7 @@ from des import des
 # --- GPIO Setup (TODO: complete this section) ---
 # TODO: Choose the correct BCM pin for the buzzer
 # TODO: Open gpiochip and claim output for the buzzer
-BUZZER_PIN = 18
+BUZZER_PIN = 7
 h = lgpio.gpiochip_open(0)
 lgpio.gpio_claim_output(h, BUZZER_PIN)
 
@@ -60,21 +60,19 @@ def main():
     client.connect((HOST, PORT))
     print(f"[image_client] Connected to {HOST}:{PORT}")
 
-    # Step 1: Send RSA public key (e,n) to the server
-    # Use the public tuple produced by generate_keypair() above
+    # Send RSA public key to the server
     e, n = public
     key_msg = f"KEY:{e},{n}\n"
     client.sendall(key_msg.encode("utf-8"))
     print(f"[image_client] sent public key: (e={e}, n={n})")
 
-    # Step 2: Send encrypted DES key
+    # Send encrypted DES key
     des_key_str = ",".join(map(str, encrypted_des_key))
     deskey_msg = f"DESKEY:{des_key_str}\n"
     client.sendall(deskey_msg.encode("utf-8"))
     print("[image_client] Sent encrypted DES key")
 
-    # Step 3: Send encrypted image
-    # encrypted_image is a latin-1 string, convert to byte-values
+    # Send encrypted image
     encrypted_bytes = [str(ord(c)) for c in encrypted_image]
     image_msg = f"IMAGE:{','.join(encrypted_bytes)}\n"
     client.sendall(image_msg.encode("utf-8"))

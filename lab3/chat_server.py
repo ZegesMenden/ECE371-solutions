@@ -18,7 +18,7 @@ from RSA import decrypt
 # --- GPIO Setup (TODO: complete this section) ---
 # TODO: Choose the correct BCM pin for LED
 # TODO: Open gpiochip and claim output for the LED
-LED_PIN = 19
+LED_PIN = 8
 h = lgpio.gpiochip_open(0)  # Open gpiochip0
 lgpio.gpio_claim_output(h, LED_PIN, 0)  # Set LED_PIN as output, initial LOW
 

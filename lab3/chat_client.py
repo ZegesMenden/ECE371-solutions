@@ -17,7 +17,7 @@ from RSA import generate_keypair, encrypt
 # --- GPIO Setup (TODO: complete this section) ---
 # TODO: Choose the correct BCM pin for the buzzer
 # TODO: Open gpiochip and claim output for the buzzer
-BUZZER_PIN = 18
+BUZZER_PIN = 7
 h = lgpio.gpiochip_open(0)
 lgpio.gpio_claim_output(h, BUZZER_PIN, 0)
 
@@ -54,11 +54,6 @@ def main():
         if msg.lower() == "exit":
             break
 
-        # Encrypt the message with the client's private key so the server
-        # (which has the client's public key sent earlier) can recover it.
-        # Note: this is the simplified lab flow where client uses private
-        # exponent for 'encryption' and the server uses the public exponent
-        # to recover the message.
         encrypted_msg = encrypt(private, msg)
         # TODO: Convert cipher list -> comma string
         cipher_str = ",".join(map(str, encrypted_msg))
