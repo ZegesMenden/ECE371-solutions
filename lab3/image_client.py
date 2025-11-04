@@ -14,7 +14,7 @@ import socket
 import time
 import lgpio
 
-from RSA import generate_keypair
+from RSA import generate_keypair, encrypt, decrypt
 from des import des
 
 # --- GPIO Setup (TODO: complete this section) ---
@@ -46,7 +46,7 @@ with open("penguin.jpg", "rb") as f:
 # TODO: Convert image_bytes to string (latin-1 safe)
 image_str = image_bytes.decode("latin-1")
 # TODO: Encrypt with DES (use padding=True, cbc=True)
-encrypted_image = cipher.encrpyt(des_key, image_str, padding=True, cbc=True)
+encrypted_image = cipher.run_cbc(des_key, image_str, action=1)
 # TODO: Encrypt DES key with RSA
 encrypted_des_key = encrypt(public, des_key)
 
