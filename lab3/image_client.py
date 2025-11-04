@@ -75,7 +75,7 @@ def main():
     # TODO
     encrypted_bytes = [str(ord(c)) for c in encrypted_image]
     image_msg = f"IMAGE:{','.join(encrypted_bytes)}\n"
-    client.sendall(image.msg.encode("utf-8"))
+    client.sendall(image_msg.encode("utf-8"))
     print("[image_client] Sent encrypted image")
     # Feedback
     buzz()
