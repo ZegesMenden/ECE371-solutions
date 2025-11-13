@@ -38,6 +38,21 @@ def blink_led(bit, duration=0.02):
 def trng(bits=NUM_BITS):
     """Collect entropy via GPIO jitter."""
     """TODO"""
+    random_bits = []
+    previous_time = time.time_ns()
+
+    while len(random_bits) < bits:
+        while lgpio.gpio_read(chip, PIN_INPUT) == 0:
+            pass
+
+        current_time = time.time_ns()
+        delta = current_time - previous_time
+        raw_bit = delta & 1
+        random_bits.append(raw_bit)
+        blink_led(raw_bit)
+        previous_time = current_time
+    return random_bits
+
 
 
 
