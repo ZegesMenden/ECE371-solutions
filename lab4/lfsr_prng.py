@@ -14,8 +14,8 @@ import random
 
 # ---------------- CONFIGURATION ----------------
 DYNAMIC_SEED = True   # Toggle True = different sequence each run; False = fixed reproducible seed
-PIN_LED = 27          # LED pin
-PIN_BUZZER = 18       # Buzzer pin
+PIN_LED = 8          # LED pin
+PIN_BUZZER = 7       # Buzzer pin
 SEED_FIXED = 0b100111 # Fixed reproducible seed
 TAPS = (5, 4)
 N_BITS = 6

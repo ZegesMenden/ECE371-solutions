@@ -20,8 +20,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # ---------------- GPIO CONFIG ----------------
-PIN_LED = 27
-PIN_BUZZER = 18
+PIN_LED = 8
+PIN_BUZZER = 7
 PIN_INPUT = 17  # For TRNG input
 
 chip = lgpio.gpiochip_open(0)

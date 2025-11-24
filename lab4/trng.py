@@ -10,8 +10,8 @@ import matplotlib.pyplot as plt
 
 # --- GPIO CONFIGURATION ---
 PIN_INPUT = 17        # floating input / noisy pin
-PIN_LED = 27          # LED output
-PIN_BUZZER = 18       # buzzer output
+PIN_LED = 8          # LED output
+PIN_BUZZER = 7       # buzzer output
 
 NUM_BITS = 512
 SAMPLE_DELAY = 0.00002
