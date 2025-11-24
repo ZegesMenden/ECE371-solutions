@@ -11,8 +11,8 @@ Outputs:
     - Histograms, autocorrelation plots
     - LED + buzzer feedback for higher entropy source
 """
-from lfsr_prng import lfsr as _lfsr
-from trng import trng as _trng
+# from lfsr_prng import lfsr as _lfsr
+# from trng import trng as _trng
 import lgpio
 import time
 import math
