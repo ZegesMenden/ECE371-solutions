@@ -100,9 +100,9 @@ def main():
     # Plot visualization
     plt.figure(figsize=(9, 4))
     plt.plot(sequence, marker='o', linestyle='-')
-    plt.title(f"Write a title here mentioning the seed used")
-    plt.xlabel("Write an xlabel here")
-    plt.ylabel("Write a ylabel here")
+    plt.title(f"LFSR PRNG Bit Sequence (seed={seed:06b})")
+    plt.xlabel("bit index")
+    plt.ylabel("bit value")
     plt.grid(True)
     plt.show()
 
