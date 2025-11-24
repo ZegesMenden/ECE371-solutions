@@ -42,15 +42,60 @@ def blink_led(bit=1, duration=0.05):
     lgpio.gpio_write(chip, PIN_LED, 0)
     pass
 
-def trng():
+NUM_BITS = 512
+def trng(bits=NUM_BITS):
     """Redfine your trng function from trng.py here"""
-    return _trng()
+    random_bits = []
+    previous_time = time.time_ns()
 
-def lfsr():
-    """Redefine your lfsr function from lfsr_prng.py"""
-    # You can add parameters such as length or seed if your _lfsr supports them.
-    # Example: return _lfsr(length=1000, seed=12345)
-    return _lfsr(seed=12345)
+    while len(random_bits) < bits:
+        while lgpio.gpio_read(chip, PIN_INPUT) == 0:
+            pass
+
+        current_time = time.time_ns()
+        delta = current_time - previous_time
+        raw_bit = delta & 1
+        random_bits.append(raw_bit)
+        blink_led(raw_bit)
+        previous_time = current_time
+    return random_bits
+
+SEED_FIXED = 0b100111 # Fixed reproducible seed
+TAPS = (5, 4)
+N_BITS = 6
+N_VALUES = (1 << N_BITS) - 1   # 63 outputs
+def lfsr(seed=SEED_FIXED, taps=TAPS, n_bits=N_BITS, n_values=N_VALUES):
+    """Generate pseudorandom sequence using LFSR."""
+    """TODO"""
+    # Avoid all-zero seed
+    if seed == 0:
+        seed = 1
+
+    # Ensure state fits in n_bits
+    mask = (1 << n_bits) - 1
+    state = seed & mask
+
+    sequence = []
+
+    for _ in range(n_values):
+        # 1. Take LSB as output bit
+        output_bit = state & 1
+        sequence.append(output_bit)
+
+        # 2. Compute feedback bit (XOR of tap bits)
+        feedback = 0
+        for t in taps:          # assume taps are 0-based indices
+            feedback ^= (state >> t) & 1
+
+        # 3. Shift right and insert feedback at MSB
+        state >>= 1
+        state |= (feedback << (n_bits - 1))
+
+        # (Optional safety) avoid getting stuck in all-zero state
+        if state == 0:
+            state = 1
+
+    return sequence
 
 def entropy(data):
     """Shannon entropy (bits per symbol)."""
