@@ -3,7 +3,7 @@ Lab 4 - Part 2: True Random Number Generator using GPIO Jitter
 with LED and Buzzer Feedback
 """
 
-import lgpio
+# import lgpio
 import time
 import math
 import matplotlib.pyplot as plt

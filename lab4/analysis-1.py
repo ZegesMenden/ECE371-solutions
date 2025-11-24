@@ -11,8 +11,8 @@ Outputs:
     - Histograms, autocorrelation plots
     - LED + buzzer feedback for higher entropy source
 """
-#from lfsr_prng import lfsr
-#from trng import trng
+from lfsr_prng import lfsr as _lfsr
+from trng import trng as _trng
 import lgpio
 import time
 import math
@@ -34,25 +34,59 @@ def beep(duration=0.1):
     lgpio.gpio_write(chip, PIN_BUZZER, 1)
     time.sleep(duration)
     lgpio.gpio_write(chip, PIN_BUZZER, 0)
+    pass
 
 def blink_led(bit=1, duration=0.05):
     lgpio.gpio_write(chip, PIN_LED, bit)
     time.sleep(duration)
     lgpio.gpio_write(chip, PIN_LED, 0)
+    pass
 
 def trng():
     """Redfine your trng function from trng.py here"""
+    return _trng()
 
 def lfsr():
     """Redefine your lfsr function from lfsr_prng.py"""
+    # You can add parameters such as length or seed if your _lfsr supports them.
+    # Example: return _lfsr(length=1000, seed=12345)
+    return _lfsr(seed=12345)
 
 def entropy(data):
     """Shannon entropy (bits per symbol)."""
-    """TODO"""
+    # Expect data as an iterable of bits (0/1). Returns entropy per bit.
+    data_list = list(data)
+    n = len(data_list)
+    if n == 0:
+        return 0.0
+
+    count1 = sum(1 for b in data_list if b == 1)
+    count0 = n - count1
+
+    p0 = count0 / n
+    p1 = count1 / n
+
+    def term(p):
+        return -p * math.log2(p) if p > 0 else 0.0
+
+    return term(p0) + term(p1)
+    
 
 def autocorrelation(bits):
     """Compute lag-1 autocorrelation coefficient."""
-    "TODO"
+    bits_array = np.array(bits)
+    n = len(bits_array)
+    if n < 2:
+        return 0.0
+
+    mean = np.mean(bits_array)
+    var = np.var(bits_array)
+
+    if var == 0:
+        return 0.0
+
+    cov = np.sum((bits_array[:-1] - mean) * (bits_array[1:] - mean)) / (n - 1)
+    return cov / var
 
 def plot_comparison(prng_bits, trng_bits, H_prng, H_trng):
     plt.figure(figsize=(10, 4))
