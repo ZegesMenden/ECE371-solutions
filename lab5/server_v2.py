@@ -2,6 +2,7 @@
 
 import socket, time
 from pathlib import Path
+import random
 
 SOCK_PATH = "/tmp/passwordchecker.sock"
 Path(SOCK_PATH).unlink(missing_ok=True)
@@ -33,7 +34,7 @@ def vulnerableCompare(secret: bytes, candidate: bytes) -> bool:
     time.sleep(jitter)
 
     elapsed = time.perf_counter() - start
-    remaining = MIN_TOTAL_TIME - elapsed
+    remaining = MIN_TOTAL_DELAT - elapsed
     if remaining > 0:
         time.sleep(remaining)
     return ok
